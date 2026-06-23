@@ -8,8 +8,9 @@
 		"funiee"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"discord": "https://discord.com/users/754428602040320002",
+		"sources": "https://github.com/fnva/mc-winkey-disable",
+		"issues": "https://github.com/fnva/mc-winkey-disable/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/winkey-disable/icon.png",
