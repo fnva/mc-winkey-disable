@@ -23,11 +23,15 @@ public class WinKeyHook {
     private HHOOK hHook;
     private LowLevelKeyboardProc proc;
     private boolean active = false;
-    private Thread hookThread; // add this
+    private volatile boolean installing = false;
+    private Thread hookThread;
 
-    private volatile int hookThreadId = 0; // add as field
+    private volatile int hookThreadId = 0;
 
     public void install() {
+        if (installing || active) return;
+        installing = true;
+
         hookThread = new Thread(() -> {
             proc = (nCode, wParam, lParam) -> {
                 if (nCode >= 0) {
@@ -52,6 +56,7 @@ public class WinKeyHook {
             );
 
             active = (hHook != null);
+            installing = false;
 
             if (active) {
                 System.out.println("[WinkeyDisable] Hook installed successfully");
@@ -61,7 +66,7 @@ public class WinKeyHook {
             }
             hookThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
 
-            // This is the message loop the hook needs to stay alive
+
             MSG msg = new MSG();
             while (User32.INSTANCE.GetMessage(msg, null, 0, 0) > 0) {
                 User32.INSTANCE.TranslateMessage(msg);
